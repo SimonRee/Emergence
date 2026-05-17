@@ -19,7 +19,7 @@ export function createMicroscopeMask(app) {
     overlay.rect(0, 0, w, h);
     overlay.fill({
       color: 0x000000,
-      alpha: 0.96,
+      alpha: 1,
     });
 
     // foro centrale
