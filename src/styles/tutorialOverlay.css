@@ -5,67 +5,95 @@
   pointer-events: none;
 
   opacity: 0;
-  transition: opacity 0.5s ease;
+  backdrop-filter: blur(0px);
+  -webkit-backdrop-filter: blur(0px);
+
+  transition:
+    opacity 0.45s ease,
+    backdrop-filter 0.45s ease,
+    -webkit-backdrop-filter 0.45s ease;
 }
 
 .tutorial-overlay.is-visible {
   opacity: 1;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
 }
+
+
 
 .tutorial-card {
   position: absolute;
+  left: 50%;
   top: 50%;
-  right: 80px;
-  transform: translateY(-50%);
+  transform: translate(-50%, -50%);
 
-  width: 12%;
-  min-height: 75%;
+  width: min(84vw, 84vh);
+  height: min(84vw, 84vh);
 
-  padding: 36px 32px;
-  border-radius: 28px;
+  border-radius: 9999px;
 
-  background: rgba(0, 0, 0, 0.72);
-  border: 2px solid rgba(180, 255, 210, 0.18);
+  background: rgba(0, 0, 0, 0.62);
+  border: 2px solid rgba(180, 255, 210, 0.14);
+
+  backdrop-filter: blur(28px);
+-webkit-backdrop-filter: blur(28px);
 
   color: #d8ffe2;
-  backdrop-filter: blur(20px);
-
   font-family: system-ui, sans-serif;
-  text-align: left;
 
   display: flex;
   flex-direction: column;
   justify-content: center;
-  
+  align-items: center;
+
+  text-align: center;
+
+  box-shadow:
+    0 0 80px rgba(120, 255, 180, 0.08),
+    inset 0 0 80px rgba(120, 255, 180, 0.04);
 }
 
 .tutorial-card h2 {
-  margin: 0 0 24px;
-  font-size: 28px;
+  margin: 0 0 28px;
+
+  font-size: 42px;
   font-weight: 500;
+  letter-spacing: -0.03em;
 }
 
 .tutorial-row {
   display: flex;
-  gap: 16px;
+  flex-direction: column;
+
+  gap: 12px;
   align-items: center;
-  margin-top: 16px;
+
+  margin-top: 32px;
 }
 
 .tutorial-icon {
-  width: 48px;
-  height: 48px;
+  width: 72px;
+  height: 72px;
+
   display: grid;
   place-items: center;
 
   border-radius: 999px;
-  background: rgba(180, 255, 210, 0.12);
+
+  background: rgba(180, 255, 210, 0.08);
 
   font-size: 26px;
 }
 
+.tutorial-icon svg {
+  width: 38px;
+  height: 38px;
+}
+
 .tutorial-row p {
   margin: 0;
-  font-size: 16px;
-  line-height: 1.4;
+  font-size: 18px;
+  line-height: 1.5;
+  max-width: 400px;
 }

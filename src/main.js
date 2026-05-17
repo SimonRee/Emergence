@@ -21,6 +21,7 @@ import { EcosystemBalancer } from "./ecosystem/EcosystemBalancer.js";
 
 import { TutorialOverlay } from "./input/TutorialOverlay.js";
 
+
 const WORLD_WIDTH = 3000;
 const WORLD_HEIGHT = 3000;
 
@@ -54,7 +55,7 @@ app.stage.addChild(viewport);
 
 // Posiziona la camera al centro del mondo
 viewport.moveCenter(WORLD_WIDTH / 2, WORLD_HEIGHT / 2);
-viewport.setZoom(0.27, true);
+viewport.setZoom(0.3, true);
 
 // Per ora abilitiamo drag e zoom, utili per testare
 viewport.drag();
@@ -64,8 +65,8 @@ viewport.clamp({
   direction: "all",
 });
 viewport.clampZoom({
-  minScale: 0.2,
-  maxScale: 3,
+  minScale: 0.1, //questo qui è con il mouse me lo gestisco io, quindi lo lascio più ampio
+  maxScale: 4,
 });
 
 // ===============================
@@ -74,6 +75,8 @@ viewport.clampZoom({
 
 const worldLayer = new Container();
 viewport.addChild(worldLayer);
+
+
 
 // Sfondo leggermente verdastro molto scuro
 const background = new Graphics();
@@ -118,6 +121,7 @@ centerMarker.stroke({
 });
 
 worldLayer.addChild(centerMarker);
+
 
 // ===============================
 // VEGETATION SYSTEM
@@ -164,7 +168,7 @@ worldLayer.addChild(decomposerSystem.container);
 
 setTimeout(() => {
   decomposerSystem.seed(130);
-}, 60000);
+}, 30000);
 
 
 
@@ -187,7 +191,7 @@ worldLayer.addChild(carnivoreSystem.container);
 
 setTimeout(() => {
   carnivoreSystem.seed(5);
-}, 90000);
+}, 30000);
 
 
 // ===============================
@@ -221,7 +225,7 @@ const userSpawnSystem = new UserSpawnSystem({
 const handInputSystem = new HandInputSystem({
   viewport,
   userSpawnSystem,
-  minZoom: 0.27,
+  minZoom: 0.3,
   maxZoom: 1.0,
   onActivity: () => tutorialOverlay.registerActivity(),
 });
@@ -230,13 +234,13 @@ handInputSystem.init();
 
 const zoomIndicator = new ZoomIndicator({
   viewport,
-  minZoom: 0.27,
+  minZoom: 0.3,
   maxZoom: 1.0,
 });
 
 //tutorial overlay
 const tutorialOverlay = new TutorialOverlay({
-  inactivityTime: 1, //tempo di inattività in secondi prima di mostrare l'overlay
+  inactivityTime: 60, //tempo di inattività in secondi prima di mostrare l'overlay
 });
 
 // ===============================
@@ -261,8 +265,8 @@ const mobileCellsGrid = new SpatialGrid({
   cellSize: 180,
 });
 
-//DEBUG PANEL
-const debugPanel = new DebugPanel();
+//DEBUG PANEL (disattivato per la mostra, lo attivo se serve a me)
+//const debugPanel = new DebugPanel();
 
 
 
@@ -301,13 +305,14 @@ app.ticker.add((ticker) => {
   zoomIndicator.update();
   tutorialOverlay.update(deltaSeconds);
 
-  debugPanel.update(deltaSeconds, {
+  //debugPanel ticker disattivato per la mostra, lo attivo se serve a me
+  /*debugPanel.update(deltaSeconds, {
     vegetationAlive: vegetationSystem.plants.length,
     vegetationDead: vegetationSystem.deadPlants.length,
     herbivores: herbivoreSystem.cells.length,
     decomposers: decomposerSystem.cells.length,
     carnivores: carnivoreSystem.cells.length,
-  });
+  });*/
 });
 
 // ===============================

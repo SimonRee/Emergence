@@ -32,7 +32,7 @@ export class HandInputSystem {
 
     // Stabilizzazione pugno
     this.fistCandidateSince = null;
-    this.fistHoldTime = 0.25;
+    this.fistHoldTime = 0.30;
     // Callback per attività rilevata (pugno o zoom)
     this.onActivity = onActivity;
   }

@@ -12,7 +12,7 @@ export class ZoomIndicator {
     this.el.style.width = "220px";
     this.el.style.height = "6px";
     this.el.style.borderRadius = "999px";
-    this.el.style.background = "rgba(255,255,255,0.12)";
+    this.el.style.background = "rgba(18, 45, 30, 0.85)";
     this.el.style.overflow = "hidden";
     this.el.style.zIndex = "9999";
     this.el.style.pointerEvents = "none";
@@ -21,7 +21,9 @@ export class ZoomIndicator {
     this.fill.style.height = "100%";
     this.fill.style.width = "0%";
     this.fill.style.borderRadius = "999px";
-    this.fill.style.background = "rgba(180,255,210,0.85)";
+    this.fill.style.background = "rgba(180, 255, 210, 0.92)";
+    this.fill.style.boxShadow =
+  "0 0 12px rgba(180,255,210,0.45)";
     this.fill.style.transition = "width 0.08s linear";
 
     this.el.appendChild(this.fill);

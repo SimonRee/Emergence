@@ -22,7 +22,7 @@ export class UserSpawnSystem {
 
     this.spawnRate = 10; // cellule al secondo
     this.maxSpawnDuration = 5; // secondi
-    this.cooldown = 30; // secondi
+    this.cooldown = 15; // secondi di cooldown dopo lo spawn prima di poter spawnare di nuovo
     this.cooldownTimer = 0;
     this.cooldownLogTimer = 0;
 
