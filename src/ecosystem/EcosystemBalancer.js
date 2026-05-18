@@ -14,7 +14,7 @@ export class EcosystemBalancer {
     this.carnivoreSystem = carnivoreSystem;
 
     this.timer = 0;
-    this.interval = 5; // ogni 5 secondi controlla l'equilibrio
+    this.interval = 15; // ogni 15 secondi controlla l'equilibrio
 
     this.targets = {
       herbivore: {
