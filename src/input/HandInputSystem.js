@@ -31,8 +31,8 @@ export class HandInputSystem {
     this.handWarmupTime = 2.0;
 
     // Area valida
-    this.validHandMinY = 0.28;
-    this.validHandMaxY = 0.72;
+    this.validHandMinY = 0.18;
+    this.validHandMaxY = 0.70;
 
     // Stabilizzazione pugno
     this.fistCandidateSince = null;
@@ -441,7 +441,7 @@ export class HandInputSystem {
         width: 150px;
         transform: translateY(-50%);
         text-align: center;
-        opacity: 0.22;
+        opacity: 0.5; //opacità quando è spento
 
         filter: drop-shadow(0 0 0 rgba(120,255,170,0));
 
@@ -506,7 +506,7 @@ export class HandInputSystem {
         bottom: 34px;
         width: 170px;
         text-align: center;
-        opacity: 0.3;
+        opacity: 0.5; //opacità quando è spento
 
         transition:
           opacity 0.25s ease,
