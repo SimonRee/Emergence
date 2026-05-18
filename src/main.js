@@ -55,7 +55,7 @@ app.stage.addChild(viewport);
 
 // Posiziona la camera al centro del mondo
 viewport.moveCenter(WORLD_WIDTH / 2, WORLD_HEIGHT / 2);
-viewport.setZoom(0.3, true);
+viewport.setZoom(0.4, true);
 
 // Per ora abilitiamo drag e zoom, utili per testare
 viewport.drag();
@@ -225,7 +225,7 @@ const userSpawnSystem = new UserSpawnSystem({
 const handInputSystem = new HandInputSystem({
   viewport,
   userSpawnSystem,
-  minZoom: 0.3,
+  minZoom: 0.4,
   maxZoom: 1.0,
   onActivity: () => tutorialOverlay.registerActivity(),
 });
@@ -234,7 +234,7 @@ handInputSystem.init();
 
 const zoomIndicator = new ZoomIndicator({
   viewport,
-  minZoom: 0.3,
+  minZoom: 0.4,
   maxZoom: 1.0,
 });
 
