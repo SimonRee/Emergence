@@ -31,8 +31,8 @@ export class HandInputSystem {
     this.handWarmupTime = 2.0;
 
     // Area valida
-    this.validHandMinY = 0.18;
-    this.validHandMaxY = 0.70;
+    this.validHandMinY = 0.30;
+    this.validHandMaxY = 0.85;
 
     // Stabilizzazione pugno
     this.fistCandidateSince = null;
