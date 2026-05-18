@@ -149,7 +149,7 @@ const herbivoreSystem = new HerbivoreSystem({
 worldLayer.addChild(herbivoreSystem.container);
 
 setTimeout(() => {
-  herbivoreSystem.seed(200);
+  herbivoreSystem.seed(5);
 }, 30000); //le erbivore spawnano dopo 15 secondi per permettere alla vegetazione di popolarsi
 
 
@@ -167,7 +167,7 @@ const decomposerSystem = new DecomposerSystem({
 worldLayer.addChild(decomposerSystem.container);
 
 setTimeout(() => {
-  decomposerSystem.seed(130);
+  decomposerSystem.seed(5);
 }, 30000);
 
 
@@ -271,18 +271,33 @@ const debugPanel = new DebugPanel();
 
 
 //TICKER CHE ANIMA ROBE
+let frameCount = 0;
+
 app.ticker.add((ticker) => {
+
+  frameCount++;
+
   const deltaSeconds = ticker.deltaMS / 1000;
 
   vegetationSystem.update(deltaSeconds);
 
-  aliveVegetationGrid.rebuild(vegetationSystem.plants);
-  deadVegetationGrid.rebuild(vegetationSystem.deadPlants);
-  mobileCellsGrid.rebuild([
-    ...herbivoreSystem.cells,
-    ...decomposerSystem.cells,
-    ...carnivoreSystem.cells,
-  ]);
+  // aggiorna le griglie solo ogni 3 frame
+  if (frameCount % 3 === 0) {
+
+    aliveVegetationGrid.rebuild(
+      vegetationSystem.plants
+    );
+
+    deadVegetationGrid.rebuild(
+      vegetationSystem.deadPlants
+    );
+
+    mobileCellsGrid.rebuild([
+      ...herbivoreSystem.cells,
+      ...decomposerSystem.cells,
+      ...carnivoreSystem.cells,
+    ]);
+  }
 
   herbivoreSystem.update(deltaSeconds, {
     aliveVegetationGrid,
@@ -301,11 +316,14 @@ app.ticker.add((ticker) => {
   ecosystemBalancer.update(deltaSeconds);
 
   userSpawnSystem.update(deltaSeconds);
+
   handInputSystem.update();
+
   zoomIndicator.update();
+
   tutorialOverlay.update(deltaSeconds);
 
-  //debugPanel ticker disattivato per la mostra, lo attivo se serve a me
+  //debug mostra
   debugPanel.update(deltaSeconds, {
     vegetationAlive: vegetationSystem.plants.length,
     vegetationDead: vegetationSystem.deadPlants.length,

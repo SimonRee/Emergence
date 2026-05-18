@@ -16,8 +16,8 @@ export class VegetationSystem {
     this.plants = [];
     this.deadPlants = [];
 
-    this.maxPlants = 3000;
-    this.maxDeadPlants = 2000;
+    this.maxPlants = 2000;
+    this.maxDeadPlants = 1500;
 
     this.globalSpawnTimer = 0;
   }
@@ -32,7 +32,7 @@ export class VegetationSystem {
     }
 
     this.updatePlants(deltaSeconds);
-    this.updateDeadPlants(deltaSeconds);
+    //this.updateDeadPlants(deltaSeconds);
   }
 
   getFertilityAt(x, y) {
