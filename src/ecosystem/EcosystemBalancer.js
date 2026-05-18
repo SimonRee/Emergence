@@ -91,27 +91,74 @@ carnivore: {
   }
 
   spawnHerbivores(amount) {
-    for (let i = 0; i < amount; i++) {
-      this.herbivoreSystem.createHerbivore(this.randomPosition());
-    }
+  for (let i = 0; i < amount; i++) {
+    this.herbivoreSystem.createHerbivore(
+      this.smartSpawnPosition(this.herbivoreSystem.cells)
+    );
   }
+}
 
   spawnDecomposers(amount) {
-    for (let i = 0; i < amount; i++) {
-      this.decomposerSystem.createDecomposer(this.randomPosition());
-    }
+  for (let i = 0; i < amount; i++) {
+    this.decomposerSystem.createDecomposer(
+      this.smartSpawnPosition(this.decomposerSystem.cells)
+    );
   }
+}
 
   spawnCarnivores(amount) {
-    for (let i = 0; i < amount; i++) {
-      this.carnivoreSystem.createCarnivore(this.randomPosition());
-    }
+  for (let i = 0; i < amount; i++) {
+    this.carnivoreSystem.createCarnivore(
+      this.smartSpawnPosition(this.carnivoreSystem.cells)
+    );
+  }
+}
+
+  smartSpawnPosition(existingCells) {
+  // se ci sono cellule simili, nasce vicino a loro
+  if (existingCells.length > 0 && Math.random() < 0.75) {
+    const parent =
+      existingCells[Math.floor(Math.random() * existingCells.length)];
+
+    const angle = Math.random() * Math.PI * 2;
+    const distance = 80 + Math.random() * 180;
+
+    return {
+      x: this.clamp(parent.x + Math.cos(angle) * distance, 0, this.worldWidth),
+      y: this.clamp(parent.y + Math.sin(angle) * distance, 0, this.worldHeight),
+    };
   }
 
-  randomPosition() {
+  // altrimenti nasce ai bordi del mondo
+  return this.edgePosition();
+}
+
+edgePosition() {
+  const margin = 180;
+  const side = Math.floor(Math.random() * 4);
+
+  if (side === 0) {
+    return { x: Math.random() * this.worldWidth, y: Math.random() * margin };
+  }
+
+  if (side === 1) {
     return {
       x: Math.random() * this.worldWidth,
-      y: Math.random() * this.worldHeight,
+      y: this.worldHeight - Math.random() * margin,
     };
+  }
+
+  if (side === 2) {
+    return { x: Math.random() * margin, y: Math.random() * this.worldHeight };
+  }
+
+  return {
+    x: this.worldWidth - Math.random() * margin,
+    y: Math.random() * this.worldHeight,
+  };
+}
+
+clamp(value, min, max) {
+  return Math.max(min, Math.min(max, value));
   }
 }

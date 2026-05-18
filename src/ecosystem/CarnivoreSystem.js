@@ -30,6 +30,7 @@ export class CarnivoreSystem {
 
     this.container = new Container();
     this.cells = [];
+    this.frameCount = 0;
 
     this.maxCells = 90;
   }
@@ -44,6 +45,7 @@ export class CarnivoreSystem {
   }
 
   update(deltaSeconds, grids = {}) {
+    this.frameCount++;
     const now = performance.now() / 1000;
 
     for (let i = this.cells.length - 1; i >= 0; i--) {
@@ -61,14 +63,18 @@ export class CarnivoreSystem {
       ...this.cells,
     ];
 
-applyBoids(cell, nearbyMobiles, deltaSeconds, "carnivore");
+if (this.frameCount % 5 === 0) {
+  applyBoids(cell, nearbyMobiles, deltaSeconds * 5, "carnivore");
+}
 
       d.age += deltaSeconds;
       d.energy -= dna.metabolism * 14 * deltaSeconds; //quanta energia consumano al secondo
 
-      let target = null;
+      let target = d.target || null;
 
-if (isHungry) {
+
+if (isHungry && this.frameCount % 8 === 0) {
+
   target = getBestClaimableTarget({
     cell,
     targets: nearbyMobiles,
@@ -76,9 +82,18 @@ if (isHungry) {
     maxDistance: dna.perceptionRadius,
     filterFn: (target) =>
       target.data.state === "alive" &&
-      (target.data.type === "herbivore" ||
-        target.data.type === "decomposer"),
+      (
+        target.data.type === "herbivore" ||
+        target.data.type === "decomposer"
+      ),
   });
+
+  d.target = target;
+}
+
+if (!isHungry) {
+  d.target = null;
+  target = null;
 }
 
       if (target) {
@@ -105,7 +120,7 @@ if (isHungry) {
 
       this.updateVisual(cell);
 
-      if (d.age >= dna.life || d.energy <= 0) {
+      if (this.frameCount % 10 === 0 && (d.age >= dna.life || d.energy <= 0)) {
         this.killCell(cell, i);
       }
     }
@@ -158,6 +173,7 @@ if (dna.tintColor) {
       visualSeed: Math.random() * 10000,
 
       dna,
+      target: null,
     };
 
     //this.drawCarnivore(cell);
@@ -184,7 +200,8 @@ if (dna.tintColor) {
     d.reproductionCooldown -= 1;
 
     if (
-      d.energy > 70 &&
+  this.frameCount % 30 === 0 &&
+  d.energy > 70 &&
       d.reproductionCooldown <= 0 &&
       Math.random() < this.getDynamicBirthRate()
     ) {

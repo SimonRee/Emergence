@@ -23,8 +23,9 @@ export class HerbivoreSystem {
 
     this.container = new Container();
     this.cells = [];
+    this.frameCount = 0;
 
-    this.maxCells = 500;
+    this.maxCells = 400;
   }
 
   seed(count = 50) {
@@ -37,6 +38,7 @@ export class HerbivoreSystem {
   }
 
   update(deltaSeconds, grids = {}) {
+    this.frameCount++;
     for (let i = this.cells.length - 1; i >= 0; i--) {
       const cell = this.cells[i];
       const d = cell.data;
@@ -50,7 +52,9 @@ const nearbyMobiles = grids.mobileCellsGrid
   ? grids.mobileCellsGrid.queryRadius(d.x, d.y, 140)
   : this.cells;
 
-applyBoids(cell, nearbyMobiles, deltaSeconds, "herbivore");
+if (this.frameCount % 5 === 0) {
+  applyBoids(cell, nearbyMobiles, deltaSeconds * 5, "herbivore");
+}
 
       d.age += deltaSeconds;
       d.energy -= dna.metabolism * 8 * deltaSeconds;
@@ -78,16 +82,16 @@ if (threat) {
 
   this.updateVisual(cell);
 
-  if (d.age >= dna.life || d.energy <= 0) {
-    this.killCell(cell, i);
-  }
+  if (this.frameCount % 10 === 0 && (d.age >= dna.life || d.energy <= 0)) {
+  this.killCell(cell, i);
+}
 
   continue;
 }
       // Se non c'è minaccia, cerca cibo
-      let target = null;
+      let target = d.target || null;
 
-if (isHungry) {
+if (isHungry && this.frameCount % 8 === 0) {
   const possibleTargets = grids.aliveVegetationGrid
     ? grids.aliveVegetationGrid.queryRadius(d.x, d.y, dna.perceptionRadius)
     : this.vegetationSystem.plants;
@@ -101,6 +105,13 @@ if (isHungry) {
       plant.data.type === "vegetation" &&
       plant.data.state === "alive",
   });
+
+  d.target = target;
+}
+
+if (!isHungry) {
+  d.target = null;
+  target = null;
 }
 
       if (target) {
@@ -121,9 +132,9 @@ if (isHungry) {
 
       this.updateVisual(cell);
 
-      if (d.age >= dna.life || d.energy <= 0) {
-        this.killCell(cell, i);
-      }
+      if (this.frameCount % 10 === 0 && (d.age >= dna.life || d.energy <= 0)) {
+  this.killCell(cell, i);
+}
     }
   }
 
@@ -167,6 +178,7 @@ if (dna.tintColor) {
       reproductionCooldown: 4 + Math.random() * 8,
       visualSeed: Math.random() * 10000,
       dna,
+      target: null,
     };
 
     //this.drawHerbivore(cell);
@@ -195,13 +207,15 @@ if (dna.tintColor) {
     d.reproductionCooldown -= 1;
 
     if (
-      d.energy > 65 &&
-      d.reproductionCooldown <= 0 &&
-      Math.random() < this.getDynamicBirthRate()    ) {
-      this.reproduce(cell);
-      d.energy *= 0.65;
-      d.reproductionCooldown = 8 + Math.random() * 10;
-    }
+  this.frameCount % 30 === 0 &&
+  d.energy > 65 &&
+  d.reproductionCooldown <= 0 &&
+  Math.random() < this.getDynamicBirthRate()
+) {
+  this.reproduce(cell);
+  d.energy *= 0.65;
+  d.reproductionCooldown = 8 + Math.random() * 10;
+}
   }
 
   reproduce(parent) {

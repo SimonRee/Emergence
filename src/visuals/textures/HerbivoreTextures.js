@@ -7,7 +7,7 @@ export function createHerbivoreTextures(app, count = 30) {
 }
 
 function createSingleHerbivoreTexture(app, seed) {
-  const size = 256;
+  const size = 128;
   const c = new Container();
   const g = new Graphics();
   const center = size / 2;
@@ -42,7 +42,7 @@ function createSingleHerbivoreTexture(app, seed) {
   g.filters = [new BlurFilter({ strength: 0.45 })];
   c.addChild(g);
 
-  const texture = RenderTexture.create({ width: size, height: size, resolution: 2 });
+  const texture = RenderTexture.create({ width: size, height: size, resolution: 1 });
   app.renderer.render({ container: c, target: texture });
   c.destroy({ children: true });
   return texture;

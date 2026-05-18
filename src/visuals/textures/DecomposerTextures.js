@@ -7,7 +7,7 @@ export function createDecomposerTextures(app, count = 30) {
 }
 
 function createSingleDecomposerTexture(app, seed) {
-  const size = 256;
+  const size = 128;
   const c = new Container();
   const g = new Graphics();
   const center = size / 2;
@@ -84,7 +84,7 @@ function createSingleDecomposerTexture(app, seed) {
   const texture = RenderTexture.create({
     width: size,
     height: size,
-    resolution: 2,
+    resolution: 1,
   });
 
   app.renderer.render({ container: c, target: texture });

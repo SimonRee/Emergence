@@ -23,6 +23,7 @@ export class DecomposerSystem {
 
     this.container = new Container();
     this.cells = [];
+    this.frameCount = 0;
 
     this.maxCells = 400;
   }
@@ -37,6 +38,7 @@ export class DecomposerSystem {
   }
 
   update(deltaSeconds, grids = {}) {
+    this.frameCount++;
     for (let i = this.cells.length - 1; i >= 0; i--) {
       const cell = this.cells[i];
       const d = cell.data;
@@ -50,7 +52,9 @@ const nearbyMobiles = grids.mobileCellsGrid
   ? grids.mobileCellsGrid.queryRadius(d.x, d.y, 130)
   : this.cells;
 
-applyBoids(cell, nearbyMobiles, deltaSeconds, "decomposer");
+if (this.frameCount % 5 === 0) {
+  applyBoids(cell, nearbyMobiles, deltaSeconds * 5, "decomposer");
+}
 
       d.age += deltaSeconds;
       d.energy -= dna.metabolism * 6 * deltaSeconds;
@@ -78,19 +82,25 @@ if (threat) {
 
   this.updateVisual(cell);
 
-  if (d.age >= dna.life || d.energy <= 0) {
+  if (this.frameCount % 10 === 0 && (d.age >= dna.life || d.energy <= 0)) {
     this.killCell(cell, i);
   }
 
   continue;
 }
 
-    // Cerca piante morte da decomporre
-      let target = null;
+// Cerca piante morte da decomporre
 
-if (isHungry) {
+let target = d.target || null;
+
+if (isHungry && this.frameCount % 8 === 0) {
+
   const possibleTargets = grids.deadVegetationGrid
-    ? grids.deadVegetationGrid.queryRadius(d.x, d.y, dna.perceptionRadius)
+    ? grids.deadVegetationGrid.queryRadius(
+        d.x,
+        d.y,
+        dna.perceptionRadius
+      )
     : this.vegetationSystem.deadPlants;
 
   target = getBestClaimableTarget({
@@ -102,6 +112,13 @@ if (isHungry) {
       plant.data.type === "vegetation" &&
       plant.data.state === "dead",
   });
+
+  d.target = target;
+}
+
+if (!isHungry) {
+  d.target = null;
+  target = null;
 }
 
       if (target) {
@@ -162,6 +179,7 @@ if (dna.tintColor) {
       reproductionCooldown: 4 + Math.random() * 10,
       visualSeed: Math.random() * 10000,
       dna,
+      target: null,
     };
 
     //this.drawDecomposer(cell);
@@ -190,7 +208,8 @@ if (dna.tintColor) {
     d.reproductionCooldown -= 1;
 
     if (
-      d.energy > 65 &&
+  this.frameCount % 30 === 0 &&
+  d.energy > 65 &&
       d.reproductionCooldown <= 0 &&
       Math.random() < this.getDynamicBirthRate()
     ) {

@@ -7,7 +7,7 @@ export function createCarnivoreTextures(app, count = 30) {
 }
 
 function createSingleCarnivoreTexture(app, seed) {
-  const size = 256;
+  const size = 128;
   const c = new Container();
   const g = new Graphics();
   const center = size / 2;
@@ -115,7 +115,7 @@ function createSingleCarnivoreTexture(app, seed) {
   const texture = RenderTexture.create({
     width: size,
     height: size,
-    resolution: 2,
+    resolution: 1,
   });
 
   app.renderer.render({ container: c, target: texture });
