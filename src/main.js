@@ -266,7 +266,7 @@ const mobileCellsGrid = new SpatialGrid({
 });
 
 //DEBUG PANEL (disattivato per la mostra, lo attivo se serve a me)
-//const debugPanel = new DebugPanel();
+const debugPanel = new DebugPanel();
 
 
 
@@ -306,13 +306,13 @@ app.ticker.add((ticker) => {
   tutorialOverlay.update(deltaSeconds);
 
   //debugPanel ticker disattivato per la mostra, lo attivo se serve a me
-  /*debugPanel.update(deltaSeconds, {
+  debugPanel.update(deltaSeconds, {
     vegetationAlive: vegetationSystem.plants.length,
     vegetationDead: vegetationSystem.deadPlants.length,
     herbivores: herbivoreSystem.cells.length,
     decomposers: decomposerSystem.cells.length,
     carnivores: carnivoreSystem.cells.length,
-  });*/
+  });
 });
 
 // ===============================
