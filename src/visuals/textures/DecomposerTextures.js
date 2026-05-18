@@ -7,7 +7,7 @@ export function createDecomposerTextures(app, count = 30) {
 }
 
 function createSingleDecomposerTexture(app, seed) {
-  const size = 128;
+  const size = 96;
   const c = new Container();
   const g = new Graphics();
   const center = size / 2;

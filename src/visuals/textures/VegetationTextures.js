@@ -11,7 +11,7 @@ export function createVegetationTextures(app, count = 30) {
 }
 
 function createSingleVegetationTexture(app, seed) {
-  const size = 128;
+  const size = 96;
   const c = new Container();
 
   const g = new Graphics();
