@@ -16,8 +16,8 @@ export class VegetationSystem {
     this.plants = [];
     this.deadPlants = [];
 
-    this.maxPlants = 1200;
-    this.maxDeadPlants = 800;
+    this.maxPlants = 1000;
+    this.maxDeadPlants = 650;
 
     this.globalSpawnTimer = 0;
   }

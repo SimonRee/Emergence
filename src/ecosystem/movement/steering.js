@@ -77,7 +77,7 @@ export function applyMotion(cell, deltaSeconds, worldWidth, worldHeight) {
 
   const dist = Math.sqrt(dx * dx + dy * dy) || 1;
 
-  const force = dna.speed * 3.5;
+  const force = dna.speed * 2;
 
   d.vx += (dx / dist) * force * deltaSeconds;
   d.vy += (dy / dist) * force * deltaSeconds;
