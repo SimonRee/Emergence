@@ -181,51 +181,43 @@ export class HandInputSystem {
   }
 
   handleSpawnGesture(hands, now) {
-    if (hands.length !== 1) {
-      if (this.isFistActive) {
-        this.userSpawnSystem.stopSpawn();
-        this.isFistActive = false;
-      }
+  // Cerca un pugno in qualunque mano visibile.
+  // Così funziona anche se ci sono 2 mani attive.
+  const fistHand = hands.find((hand) => this.isFist(hand));
 
-      this.fistCandidateSince = null;
-      this.fistProgress = 0;
-      return;
+  if (!fistHand) {
+    this.fistCandidateSince = null;
+    this.fistProgress = 0;
+
+    if (this.isFistActive) {
+      this.userSpawnSystem.stopSpawn();
+      this.isFistActive = false;
     }
 
-    const hand = hands[0];
-    const fist = this.isFist(hand);
-
-    if (fist) {
-      if (this.fistCandidateSince === null) {
-        this.fistCandidateSince = now;
-      }
-
-      const fistStableEnough =
-        now - this.fistCandidateSince >= this.fistHoldTime;
-
-      this.fistProgress = this.clamp(
-        (now - this.fistCandidateSince) / this.fistHoldTime,
-        0,
-        1
-      );
-
-      if (fistStableEnough && !this.isFistActive) {
-        this.userSpawnSystem.startSpawn();
-        this.isFistActive = true;
-
-        this.spawnCooldownStartedAt = now;
-        this.spawnCooldownProgress = 1;
-      }
-    } else {
-      this.fistCandidateSince = null;
-      this.fistProgress = 0;
-
-      if (this.isFistActive) {
-        this.userSpawnSystem.stopSpawn();
-        this.isFistActive = false;
-      }
-    }
+    return;
   }
+
+  if (this.fistCandidateSince === null) {
+    this.fistCandidateSince = now;
+  }
+
+  const fistStableEnough =
+    now - this.fistCandidateSince >= this.fistHoldTime;
+
+  this.fistProgress = this.clamp(
+    (now - this.fistCandidateSince) / this.fistHoldTime,
+    0,
+    1
+  );
+
+  if (fistStableEnough && !this.isFistActive) {
+    this.userSpawnSystem.startSpawn();
+    this.isFistActive = true;
+
+    this.spawnCooldownStartedAt = now;
+    this.spawnCooldownProgress = 1;
+  }
+}
 
   handleZoomGesture(hands) {
     if (hands.length !== 2) {
