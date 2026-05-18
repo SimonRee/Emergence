@@ -18,27 +18,27 @@ export class EcosystemBalancer {
 
     this.targets = {
       herbivore: {
-  target: 200,
-  min: 180,
-  max: 230,
+  target: 130,
+  min: 100,
+  max: 150,
   emergency: 80,
   softSpawn: 12,
   emergencySpawn: 35,
 },
 
 decomposer: {
-  target: 130,
-  min: 110,
-  max: 160,
+  target: 100,
+  min: 80,
+  max: 130,
   emergency: 50,
   softSpawn: 8,
   emergencySpawn: 25,
 },
 
 carnivore: {
-  target: 40,
-  min: 30,
-  max: 55,
+  target: 30,
+  min: 25,
+  max: 40,
   emergency: 10,
   softSpawn: 3,
   emergencySpawn: 8,
@@ -92,25 +92,41 @@ carnivore: {
 
   spawnHerbivores(amount) {
   for (let i = 0; i < amount; i++) {
-    this.herbivoreSystem.createHerbivore(
-      this.smartSpawnPosition(this.herbivoreSystem.cells)
-    );
+
+    const pos = this.smartSpawnPosition(this.herbivoreSystem.cells);
+
+    const cell = this.herbivoreSystem.createHerbivore(pos);
+
+    // se è nata ai bordi viene attirata verso il centro
+    if (pos.fromEdge && cell) {
+  cell.data.centerAttractionTimer = 6 + Math.random() * 6;
+}
   }
 }
 
   spawnDecomposers(amount) {
   for (let i = 0; i < amount; i++) {
-    this.decomposerSystem.createDecomposer(
-      this.smartSpawnPosition(this.decomposerSystem.cells)
-    );
+
+    const pos = this.smartSpawnPosition(this.decomposerSystem.cells);
+
+    const cell = this.decomposerSystem.createDecomposer(pos);
+
+    if (pos.fromEdge && cell) {
+  cell.data.centerAttractionTimer = 6 + Math.random() * 6;
+}
   }
 }
 
   spawnCarnivores(amount) {
   for (let i = 0; i < amount; i++) {
-    this.carnivoreSystem.createCarnivore(
-      this.smartSpawnPosition(this.carnivoreSystem.cells)
-    );
+
+    const pos = this.smartSpawnPosition(this.carnivoreSystem.cells);
+
+    const cell = this.carnivoreSystem.createCarnivore(pos);
+
+    if (pos.fromEdge && cell) {
+  cell.data.centerAttractionTimer = 6 + Math.random() * 6;
+}
   }
 }
 
@@ -126,6 +142,7 @@ carnivore: {
     return {
       x: this.clamp(parent.x + Math.cos(angle) * distance, 0, this.worldWidth),
       y: this.clamp(parent.y + Math.sin(angle) * distance, 0, this.worldHeight),
+      fromEdge: false,
     };
   }
 
@@ -138,27 +155,37 @@ edgePosition() {
   const side = Math.floor(Math.random() * 4);
 
   if (side === 0) {
-    return { x: Math.random() * this.worldWidth, y: Math.random() * margin };
+    return {
+      x: Math.random() * this.worldWidth,
+      y: Math.random() * margin,
+      fromEdge: true,
+    };
   }
 
   if (side === 1) {
     return {
       x: Math.random() * this.worldWidth,
       y: this.worldHeight - Math.random() * margin,
+      fromEdge: true,
     };
   }
 
   if (side === 2) {
-    return { x: Math.random() * margin, y: Math.random() * this.worldHeight };
+    return {
+      x: Math.random() * margin,
+      y: Math.random() * this.worldHeight,
+      fromEdge: true,
+    };
   }
 
   return {
     x: this.worldWidth - Math.random() * margin,
     y: Math.random() * this.worldHeight,
+    fromEdge: true,
   };
 }
 
 clamp(value, min, max) {
   return Math.max(min, Math.min(max, value));
-  }
+}
 }

@@ -65,6 +65,24 @@ export function applyMotion(cell, deltaSeconds, worldWidth, worldHeight) {
   const d = cell.data;
   const dna = d.dna;
 
+  // attrazione temporanea verso il centro per cellule spawnate ai bordi
+  if (d.centerAttractionTimer > 0) {
+  d.centerAttractionTimer -= deltaSeconds;
+
+  const centerX = worldWidth / 2;
+  const centerY = worldHeight / 2;
+
+  const dx = centerX - d.x;
+  const dy = centerY - d.y;
+
+  const dist = Math.sqrt(dx * dx + dy * dy) || 1;
+
+  const force = dna.speed * 5;
+
+  d.vx += (dx / dist) * force * deltaSeconds;
+  d.vy += (dy / dist) * force * deltaSeconds;
+}
+
   const friction = 0.92;
   d.vx *= friction;
   d.vy *= friction;
