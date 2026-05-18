@@ -30,8 +30,8 @@ const app = new Application();
 await app.init({
   resizeTo: window,
   backgroundColor: 0x000000,
-  antialias: true,
-  resolution: window.devicePixelRatio || 1,
+  antialias: false,
+  resolution: window.devicePixelRatio || 0.75,
   autoDensity: true,
 });
 
