@@ -285,7 +285,7 @@ const pulse =
   Math.sin(d.age * dna.pulseSpeed + d.visualSeed) *
     dna.pulseAmount * 0.35;
 
-const BASE_VISUAL_SCALE = 0.45; // cambia questo
+const BASE_VISUAL_SCALE = 0.40; // cambia questo
 cell.scale.set(BASE_VISUAL_SCALE * energyVisual * pulse);
 cell.alpha = dna.opacity * (0.85 + (d.energy / 100) * 0.4); //cambia opacity in base all'energia
   }
